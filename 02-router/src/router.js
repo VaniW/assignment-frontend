@@ -18,14 +18,14 @@ export default function(route, fn) {
 function init(){
   eventHandler();
   const path = window.location.pathname; //gets uri of current page
-  goto(path);
+  goto(path, true);
 }
 
 function eventHandler() {
   window.addEventListener('popstate', e => {
     if (history.state) {
       let path = e.state.pathname;
-      goto(path, true);
+      goto(path);
     }
   });
 
@@ -64,7 +64,9 @@ function goto(route, init){
       history.pushState({pathname: route}, '', route);
     }
   }
-  if (!init)  history.replaceState({pathname: route}, '', route);
+  if (init) {
+    history.replaceState({pathname: route}, '', route);
+  }
 
   return routes.get(path)(uri);
 }
